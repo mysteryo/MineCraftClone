@@ -6,7 +6,7 @@ public class MouseLook : MonoBehaviour
 {
     float mouseX;
     float mouseY;
-    float mouseSensitivity = 100f;
+    float mouseSensitivity = 400f;
     float xRotation = 0f;
     public Transform playerBody;
    

@@ -4,14 +4,15 @@ using UnityEngine;
 
 public static class VoxelData
 {
-
-    public static readonly int chunkWidth = 50;
+    public static Dictionary<chunkCoord, Chunk> chunkDictionary = new Dictionary<chunkCoord, Chunk>();
+    public static Dictionary<chunkCoord, GameObject> chunkGameobjectDictionary = new Dictionary<chunkCoord, GameObject>();
+    public static readonly int chunkWidth = 16;
     public static readonly int chunkHeight = 50;
 
     public static readonly int TextureAtlasSizeInBlocks = 4;
     public static float NormalizedBlockTextureSize
     {
-        get { return 1f /(float) TextureAtlasSizeInBlocks; }
+        get { return 1f / (float)TextureAtlasSizeInBlocks; }
     }
 
     //Vertex points as shown in Reference/cube points go chronologically from 0 to 7
@@ -52,7 +53,7 @@ public static class VoxelData
         {1,2,5,6 }  //right face
     };
 
-    //
+
     public static readonly Vector2[] voxelUvs = new Vector2[4]
     {
         new Vector2(0f,0f),
@@ -60,4 +61,17 @@ public static class VoxelData
         new Vector2(1f,0f),
         new Vector2(1f,1f)
     };
+
+}
+
+public struct chunkCoord
+{
+    public chunkCoord(int _posX, int _posZ)
+    {
+        posX = _posX;
+        posZ = _posZ;
+    }
+
+    public int posX;
+    public int posZ;
 }
