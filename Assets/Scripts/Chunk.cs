@@ -51,7 +51,7 @@ public class Chunk : MonoBehaviour
                     }
                     else
                     {
-                        voxelMap[x, y, z] = (byte)Block.FURNACE;
+                        voxelMap[x, y, z] = (byte)Block.GRASS;
                     }
                 }
             }
@@ -174,7 +174,6 @@ public class Chunk : MonoBehaviour
 
                 vertexIndex += 4;
             }
-
         }
     }
 

@@ -55,6 +55,9 @@ public class BlockType
     public int leftFaceTexture;
     public int rightFaceTexture;
 
+    //how much seconds to destroy
+    public float hardeness;
+
     //back, front, top, bottom,left,right -> order of faces being drawn for texture index always same order as in voxelData
     public int GetTexureIndex(int faceIndex)
     {

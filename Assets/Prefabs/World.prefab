@@ -55,6 +55,7 @@ MonoBehaviour:
     bottomFaceTexture: 5
     leftFaceTexture: 5
     rightFaceTexture: 5
+    hardeness: 1e+9
   - blockName: Stone
     isSolid: 1
     backFaceTexture: 1
@@ -63,6 +64,7 @@ MonoBehaviour:
     bottomFaceTexture: 1
     leftFaceTexture: 1
     rightFaceTexture: 1
+    hardeness: 4
   - blockName: Sand
     isSolid: 1
     backFaceTexture: 6
@@ -71,6 +73,7 @@ MonoBehaviour:
     bottomFaceTexture: 6
     leftFaceTexture: 6
     rightFaceTexture: 6
+    hardeness: 1
   - blockName: Gravel
     isSolid: 1
     backFaceTexture: 7
@@ -79,6 +82,7 @@ MonoBehaviour:
     bottomFaceTexture: 7
     leftFaceTexture: 7
     rightFaceTexture: 7
+    hardeness: 1.5
   - blockName: Cobblestone
     isSolid: 1
     backFaceTexture: 4
@@ -87,6 +91,7 @@ MonoBehaviour:
     bottomFaceTexture: 4
     leftFaceTexture: 4
     rightFaceTexture: 4
+    hardeness: 4
   - blockName: Coal
     isSolid: 1
     backFaceTexture: 10
@@ -95,6 +100,7 @@ MonoBehaviour:
     bottomFaceTexture: 10
     leftFaceTexture: 10
     rightFaceTexture: 10
+    hardeness: 4
   - blockName: Brick
     isSolid: 1
     backFaceTexture: 11
@@ -103,6 +109,7 @@ MonoBehaviour:
     bottomFaceTexture: 11
     leftFaceTexture: 11
     rightFaceTexture: 11
+    hardeness: 6
   - blockName: Wood
     isSolid: 1
     backFaceTexture: 8
@@ -111,6 +118,7 @@ MonoBehaviour:
     bottomFaceTexture: 9
     leftFaceTexture: 8
     rightFaceTexture: 8
+    hardeness: 3
   - blockName: Dirt
     isSolid: 1
     backFaceTexture: 2
@@ -119,6 +127,7 @@ MonoBehaviour:
     bottomFaceTexture: 2
     leftFaceTexture: 2
     rightFaceTexture: 2
+    hardeness: 1.5
   - blockName: Grass
     isSolid: 1
     backFaceTexture: 3
@@ -127,6 +136,7 @@ MonoBehaviour:
     bottomFaceTexture: 2
     leftFaceTexture: 3
     rightFaceTexture: 3
+    hardeness: 2
   - blockName: Plank
     isSolid: 1
     backFaceTexture: 15
@@ -135,6 +145,7 @@ MonoBehaviour:
     bottomFaceTexture: 15
     leftFaceTexture: 15
     rightFaceTexture: 15
+    hardeness: 2
   - blockName: Furnace
     isSolid: 1
     backFaceTexture: 13
@@ -143,6 +154,7 @@ MonoBehaviour:
     bottomFaceTexture: 14
     leftFaceTexture: 13
     rightFaceTexture: 13
+    hardeness: 4
   player: {fileID: 0}
 --- !u!33 &1351362488736858094
 MeshFilter:
