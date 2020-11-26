@@ -9,12 +9,12 @@ public class GenerateChunks : MonoBehaviour
 {
     public Transform player;
     public World world;
-    Queue<chunkCoord> toGenerate = new Queue<chunkCoord>();
-    HashSet<chunkCoord> toGenerateUniques = new HashSet<chunkCoord>();
-    Queue<chunkCoord> toDestroy = new Queue<chunkCoord>();
-    HashSet<chunkCoord> toDestroyUniques = new HashSet<chunkCoord>();
-    chunkCoord currentChunkPos = new chunkCoord(0, 0);
-    chunkCoord currentPlayerPosInChunk;
+    Queue<ChunkCoord> toGenerate = new Queue<ChunkCoord>();
+    HashSet<ChunkCoord> toGenerateUniques = new HashSet<ChunkCoord>();
+    Queue<ChunkCoord> toDestroy = new Queue<ChunkCoord>();
+    HashSet<ChunkCoord> toDestroyUniques = new HashSet<ChunkCoord>();
+    ChunkCoord currentChunkPos = new ChunkCoord(0, 0);
+    ChunkCoord currentPlayerPosInChunk;
     int viewRange = 5;
     public GameObject chunk;
 
@@ -26,7 +26,7 @@ public class GenerateChunks : MonoBehaviour
         {
             for (int j = 0; j < 10; j++)
             {
-                SpawnChunk(new chunkCoord(i, j));
+                SpawnChunk(new ChunkCoord(i, j));
             }
         }
         Vector3 spawnPoint = new Vector3(5 * VoxelData.chunkWidth, 60, 5 * VoxelData.chunkWidth);
@@ -45,20 +45,20 @@ public class GenerateChunks : MonoBehaviour
 
     private void FixedUpdate()
     {
-        currentPlayerPosInChunk = new chunkCoord((int)player.transform.position.x / 16, (int)player.transform.position.z / 16);
+        currentPlayerPosInChunk = new ChunkCoord((int)player.transform.position.x / 16, (int)player.transform.position.z / 16);
         if (currentChunkPos.posX != currentPlayerPosInChunk.posX || currentChunkPos.posZ != currentPlayerPosInChunk.posZ)
         {
             for (int i = -5; i <= 5; i++)
             {
                 for (int j = -5; j <= 5; j++)
                 {
-                    if (!VoxelData.chunkDictionary.ContainsKey(new chunkCoord((int)(player.position.x / 15 + i), (int)(player.position.z / 15 + j))))
+                    if (!VoxelData.chunkDictionary.ContainsKey(new ChunkCoord((int)(player.position.x / 15 + i), (int)(player.position.z / 15 + j))))
                     {
                         int x = (int)(player.position.x / 15 + i);
                         int z = (int)(player.position.z / 15 + j);
-                        if (toGenerateUniques.Add(new chunkCoord(x, z)))
+                        if (toGenerateUniques.Add(new ChunkCoord(x, z)))
                         {
-                            toGenerate.Enqueue(new chunkCoord(x, z));
+                            toGenerate.Enqueue(new ChunkCoord(x, z));
                         }
                     }
                 }
@@ -72,7 +72,7 @@ public class GenerateChunks : MonoBehaviour
         }
     }
 
-    void SpawnChunk(chunkCoord coord)
+    void SpawnChunk(ChunkCoord coord)
     {
         int posX = coord.posX;
         int posZ = coord.posZ;
@@ -86,7 +86,7 @@ public class GenerateChunks : MonoBehaviour
 
     void UnloadChunks()
     {
-        List<chunkCoord> toDestroy = new List<chunkCoord>();
+        List<ChunkCoord> toDestroy = new List<ChunkCoord>();
         foreach (var item in VoxelData.chunkDictionary)
         {
             if ((int)(player.position.x / 15) - viewRange - 2 > item.Key.posX || (int)(player.position.x / 15) + viewRange + 2 < item.Key.posX

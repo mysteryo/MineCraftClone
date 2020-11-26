@@ -72,9 +72,9 @@ public class Chunk : MonoBehaviour
         }
         else if (x < 0)
         {
-            if (VoxelData.chunkDictionary.ContainsKey(new chunkCoord(posX - 1, posZ)))
+            if (VoxelData.chunkDictionary.ContainsKey(new ChunkCoord(posX - 1, posZ)))
             {
-                Chunk c = VoxelData.chunkDictionary[new chunkCoord(posX - 1, posZ)];
+                Chunk c = VoxelData.chunkDictionary[new ChunkCoord(posX - 1, posZ)];
                 if (c.voxelMap[VoxelData.chunkWidth - 1, y, z] == 255)
                 {
                     b = false;
@@ -85,9 +85,9 @@ public class Chunk : MonoBehaviour
 
         else if (x > VoxelData.chunkWidth - 1)
         {
-            if (VoxelData.chunkDictionary.ContainsKey(new chunkCoord(posX + 1, posZ)))
+            if (VoxelData.chunkDictionary.ContainsKey(new ChunkCoord(posX + 1, posZ)))
             {
-                Chunk c = VoxelData.chunkDictionary[new chunkCoord(posX + 1, posZ)];
+                Chunk c = VoxelData.chunkDictionary[new ChunkCoord(posX + 1, posZ)];
                 if (c.voxelMap[0, y, z] == 255)
                 {
                     b = false;
@@ -98,9 +98,9 @@ public class Chunk : MonoBehaviour
 
         else if (z < 0)
         {
-            if (VoxelData.chunkDictionary.ContainsKey(new chunkCoord(posX, posZ - 1)))
+            if (VoxelData.chunkDictionary.ContainsKey(new ChunkCoord(posX, posZ - 1)))
             {
-                Chunk c = VoxelData.chunkDictionary[new chunkCoord(posX, posZ - 1)];
+                Chunk c = VoxelData.chunkDictionary[new ChunkCoord(posX, posZ - 1)];
                 if (c.voxelMap[x, y, VoxelData.chunkWidth - 1] == 255)
                 {
                     b = false;
@@ -111,9 +111,9 @@ public class Chunk : MonoBehaviour
 
         else if (z > VoxelData.chunkWidth - 1)
         {
-            if (VoxelData.chunkDictionary.ContainsKey(new chunkCoord(posX, posZ + 1)))
+            if (VoxelData.chunkDictionary.ContainsKey(new ChunkCoord(posX, posZ + 1)))
             {
-                Chunk c = VoxelData.chunkDictionary[new chunkCoord(posX, posZ + 1)];
+                Chunk c = VoxelData.chunkDictionary[new ChunkCoord(posX, posZ + 1)];
                 if (c.voxelMap[x, y, 0] == 255)
                 {
                     b = false;

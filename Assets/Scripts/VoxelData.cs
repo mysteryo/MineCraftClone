@@ -4,8 +4,8 @@ using UnityEngine;
 
 public static class VoxelData
 {
-    public static Dictionary<chunkCoord, Chunk> chunkDictionary = new Dictionary<chunkCoord, Chunk>();
-    public static Dictionary<chunkCoord, GameObject> chunkGameobjectDictionary = new Dictionary<chunkCoord, GameObject>();
+    public static Dictionary<ChunkCoord, Chunk> chunkDictionary = new Dictionary<ChunkCoord, Chunk>();
+    public static Dictionary<ChunkCoord, GameObject> chunkGameobjectDictionary = new Dictionary<ChunkCoord, GameObject>();
     public static readonly int chunkWidth = 16;
     public static readonly int chunkHeight = 50;
 
@@ -64,9 +64,10 @@ public static class VoxelData
 
 }
 
-public struct chunkCoord
+[System.Serializable]
+public struct ChunkCoord
 {
-    public chunkCoord(int _posX, int _posZ)
+    public ChunkCoord(int _posX, int _posZ)
     {
         posX = _posX;
         posZ = _posZ;

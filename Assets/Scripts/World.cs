@@ -9,7 +9,7 @@ public class World : MonoBehaviour
     public Material material;
     public BlockType[] blockTypes;
     public Transform player;
-    int layer = 8;
+    //int layer = 8;
 
 
     //private void Start()
@@ -84,6 +84,7 @@ public class BlockType
 
 //enum values coresponds to block type ID in editor
 //air blocks are assigned on the end of byte and we skip all mesh rendering and other stuff when we create them therefore they dont need blocktype or texture
+[System.Serializable]
 public enum Block
 {
     BEDROCK, STONE, SAND, GRAVEL, COBBLESTONE, COAL, BRICK, WOOD, DIRT, GRASS, PLANK,FURNACE, AIR = 255

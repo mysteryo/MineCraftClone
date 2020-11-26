@@ -13,7 +13,7 @@ public class PlacementController : MonoBehaviour
     public World world;
     [SerializeField]
     float timeElapsed = 0;
-    chunkCoord destroyChunkCoord;
+    ChunkCoord destroyChunkCoord;
     Chunk c;
     DestructionBlock destroBlock;
     public LayerMask layer;
@@ -37,12 +37,14 @@ public class PlacementController : MonoBehaviour
         cooldownTimer += Time.deltaTime;
         if (Inventory.isBlock)
         {
-            if (Physics.Raycast(mainCam.transform.position, mainCam.transform.forward, out hit, rayDistance,layer))
+            if (Physics.Raycast(mainCam.transform.position, mainCam.transform.forward, out hit, rayDistance, layer))
             {
                 //there is a pixel perfect position which can allow you to place block on the corner mby take care later
                 Vector3 placementPoint = hit.point - mainCam.transform.forward * 0.001f;
                 ghostBlock.SetActive(true);
-                ghostBlock.transform.position = new Vector3((int)placementPoint.x + .5f, (int)placementPoint.y + .5f, (int)placementPoint.z + .5f);
+                float x = placementPoint.x >= 0 ? (int)placementPoint.x + .5f : (int)placementPoint.x - .5f;
+                float z = placementPoint.z >= 0 ? (int)placementPoint.z + .5f : (int)placementPoint.z - .5f;
+                ghostBlock.transform.position = new Vector3(x, (int)placementPoint.y + .5f, z);
                 if (Input.GetMouseButtonDown(1))
                 {
                     PlaceBlock();
@@ -56,7 +58,7 @@ public class PlacementController : MonoBehaviour
         else
         {
             ghostBlock.SetActive(false);
-            if (Physics.Raycast(mainCam.transform.position, mainCam.transform.forward, out hit, rayDistance,layer))
+            if (Physics.Raycast(mainCam.transform.position, mainCam.transform.forward, out hit, rayDistance, layer))
             {
                 //go a tiny bit into block
                 Vector3 destroytPoint = hit.point + mainCam.transform.forward * 0.01f;
@@ -76,74 +78,76 @@ public class PlacementController : MonoBehaviour
 
     void PlaceBlock()
     {
-        int blockPosX = Mathf.Abs((int)(ghostBlock.transform.position.x % 16));
-        int blockPosY = (int)(ghostBlock.transform.position.y);
-        int blockPosZ = Mathf.Abs((int)(ghostBlock.transform.position.z % 16));
+        //int blockPosX = Mathf.Abs((int)(ghostBlock.transform.position.x % 16));
+        //int blockPosY = (int)(ghostBlock.transform.position.y);
+        //int blockPosZ = Mathf.Abs((int)(ghostBlock.transform.position.z % 16));
 
-        chunkCoord ghostChunkCoord = new chunkCoord((int)(ghostBlock.transform.position.x / 16), (int)(ghostBlock.transform.position.z / 16));
+        Vector3Int blockInChunkPos = ChunkCalculations.CalculatePosInBlock(ghostBlock.transform.position);
+
+        ChunkCoord ghostChunkCoord = ChunkCalculations.CalculateChunkFromWorldPos(ghostBlock.transform.position);
         Chunk c = VoxelData.chunkDictionary[ghostChunkCoord];
-        c.voxelMap[blockPosX, blockPosY, blockPosZ] = (byte)Inventory.currentBlock;
+        c.voxelMap[blockInChunkPos.x, blockInChunkPos.y, blockInChunkPos.z] = (byte)Inventory.currentBlock;
         c.RegenerateChunk();
         Debug.Log($"ghost block pos: {ghostBlock.transform.position.x} {ghostBlock.transform.position.y} {ghostBlock.transform.position.z}");
-        Debug.Log($"Block placement = {blockPosX} , {blockPosY} , {blockPosZ}");
+        Debug.Log($"Block placement = {blockInChunkPos.x} , {blockInChunkPos.y} , {blockInChunkPos.z}");
     }
 
     void DestroyBlock(Vector3 destroyPoint)
     {
-        int blockPosX = Mathf.Abs((int)(destroyPoint.x % 16));
-        int blockPosY = (int)(destroyPoint.y);
-        int blockPosZ = Mathf.Abs((int)(destroyPoint.z % 16));
-        Debug.Log($"{blockPosX} , {blockPosY} , {blockPosZ} mining this block");
-        destructionGhost.transform.position = new Vector3((int)destroyPoint.x +.5f, (int)destroyPoint.y +.5f, (int)destroyPoint.z +.5f);
+        //int blockPosX = Mathf.Abs((int)(destroyPoint.x % 16));
+        //int blockPosY = (int)(destroyPoint.y);
+        //int blockPosZ = Mathf.Abs((int)(destroyPoint.z % 16));
+
+        Vector3Int blockInChunkPos = ChunkCalculations.CalculatePosInBlock(destroyPoint);
+
+        Debug.Log($"{blockInChunkPos.x} , {blockInChunkPos.y} , {blockInChunkPos.z} mining this block");
+        float x = destroyPoint.x >= 0 ? (int)destroyPoint.x + .5f : (int)destroyPoint.x - .5f;
+        float z = destroyPoint.z >= 0 ? (int)destroyPoint.z + .5f : (int)destroyPoint.z - .5f;
+        destructionGhost.transform.position = new Vector3(x, (int)destroyPoint.y + .5f, z);
         destructionGhost.SetActive(true);
 
         //to prevent useless initializing every frame
-        if (blockPosX != pomX || blockPosY != pomY || blockPosZ != pomZ)
+        if (blockInChunkPos.x != pomX || blockInChunkPos.y != pomY || blockInChunkPos.z != pomZ)
         {
-            destroyChunkCoord = new chunkCoord((int)(destroyPoint.x / 16), (int)(destroyPoint.z / 16));
+            destroyChunkCoord = ChunkCalculations.CalculateChunkFromWorldPos(destroyPoint);
             c = VoxelData.chunkDictionary[destroyChunkCoord];
-            pomX = blockPosX;
-            pomY = blockPosY;
-            pomZ = blockPosZ;
+            pomX = blockInChunkPos.x;
+            pomY = blockInChunkPos.y;
+            pomZ = blockInChunkPos.z;
             timeElapsed = 0;
         }
 
         timeElapsed += Time.deltaTime;
-        // you can sometimes hit an air block on the frame
-        if (c.voxelMap[blockPosX, blockPosY, blockPosZ] == 255)
-        {
-            Debug.Log($"{blockPosX} , {blockPosY} , {blockPosZ} is an air block");
-            return;
-        }
-        if (timeElapsed > world.blockTypes[c.voxelMap[blockPosX, blockPosY, blockPosZ]].hardeness) destroyed = true;
+        
+        if (timeElapsed > world.blockTypes[c.voxelMap[blockInChunkPos.x, blockInChunkPos.y, blockInChunkPos.z]].hardeness) destroyed = true;
 
-        ShowDestructionProgress(world.blockTypes[c.voxelMap[blockPosX, blockPosY, blockPosZ]].hardeness);
+        ShowDestructionProgress(world.blockTypes[c.voxelMap[blockInChunkPos.x, blockInChunkPos.y, blockInChunkPos.z]].hardeness);
 
         if (destroyed)
         {
-            c.voxelMap[blockPosX, blockPosY, blockPosZ] = (byte)Block.AIR;
+            c.voxelMap[blockInChunkPos.x, blockInChunkPos.y, blockInChunkPos.z] = (byte)Block.AIR;
             c.RegenerateChunk();
             Debug.Log($"destroy block pos: {(int)destroyPoint.x} {(int)destroyPoint.y} {(int)destroyPoint.z}");
-            Debug.Log($"Block destroyed = {blockPosX} , {blockPosY} , {blockPosZ}");
-            chunkCoord nextChunk;
-            if (blockPosX == 0)
+            Debug.Log($"Block destroyed = {blockInChunkPos.x} , {blockInChunkPos.y} , {blockInChunkPos.z}");
+            ChunkCoord nextChunk;
+            if (blockInChunkPos.x == 0)
             {
-                nextChunk = new chunkCoord((int)((destroyPoint.x - 1) / 16), (int)(destroyPoint.z / 16));
+                nextChunk = new ChunkCoord((int)((destroyPoint.x - 1) / 16), (int)(destroyPoint.z / 16));
                 VoxelData.chunkDictionary[nextChunk].RegenerateChunk();
             }
-            if (blockPosX == 15)
+            if (blockInChunkPos.x == 15)
             {
-                nextChunk = new chunkCoord((int)((destroyPoint.x + 1) / 16), (int)(destroyPoint.z / 16));
+                nextChunk = new ChunkCoord((int)((destroyPoint.x + 1) / 16), (int)(destroyPoint.z / 16));
                 VoxelData.chunkDictionary[nextChunk].RegenerateChunk();
             }
-            if (blockPosZ == 0)
+            if (blockInChunkPos.z == 0)
             {
-                nextChunk = new chunkCoord((int)(destroyPoint.x / 16), (int)((destroyPoint.z - 1) / 16));
+                nextChunk = new ChunkCoord((int)(destroyPoint.x / 16), (int)((destroyPoint.z - 1) / 16));
                 VoxelData.chunkDictionary[nextChunk].RegenerateChunk();
             }
-            if (blockPosZ == 15)
+            if (blockInChunkPos.z == 15)
             {
-                nextChunk = new chunkCoord((int)(destroyPoint.x / 16), (int)((destroyPoint.z + 1) / 16));
+                nextChunk = new ChunkCoord((int)(destroyPoint.x / 16), (int)((destroyPoint.z + 1) / 16));
                 VoxelData.chunkDictionary[nextChunk].RegenerateChunk();
             }
             ResetPoms();
@@ -151,6 +155,8 @@ public class PlacementController : MonoBehaviour
             destroyed = false;
             destructionGhost.SetActive(false);
             cooldownTimer = 0;
+            ChunkSaveObject so = new ChunkSaveObject(blockInChunkPos.x, blockInChunkPos.y, blockInChunkPos.z, destroyChunkCoord, Block.AIR);
+            ChunkSaveObject.SaveChunk(so);
         }
     }
 
@@ -165,7 +171,7 @@ public class PlacementController : MonoBehaviour
     {
         if (timeElapsed < hardness * 0.33f) destroBlock.ShowDestruction(1);
 
-        if (timeElapsed > hardness * 0.33f && timeElapsed < hardness * 0.66f) 
+        if (timeElapsed > hardness * 0.33f && timeElapsed < hardness * 0.66f)
             destroBlock.ShowDestruction(2);
 
         if (timeElapsed > hardness * 0.66f) destroBlock.ShowDestruction(3);
