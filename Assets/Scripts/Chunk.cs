@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,17 +12,22 @@ public class Chunk : MonoBehaviour
     public int posX;
     public int posZ;
     public World world;
+    public SaveLoadChunkHandler saveLoadHandler;
     public byte[,,] voxelMap = new byte[VoxelData.chunkWidth, VoxelData.chunkHeight, VoxelData.chunkWidth];
 
     private void OnEnable()
     {
+        saveLoadHandler = GameObject.Find("SaveLoadHandler").GetComponent<SaveLoadChunkHandler>();
         posX = (int)transform.position.x;
         posZ = (int)transform.position.z;
         gameObject.transform.position = Vector3.zero;
         PopulateVoxelMap();
+        LoadVoxelMapEdit();
         CreateMeshData();
         CreateMesh();
     }
+
+    
 
     public void RegenerateChunk()
     {
@@ -55,6 +61,16 @@ public class Chunk : MonoBehaviour
                     }
                 }
             }
+        }
+    }
+
+    private void LoadVoxelMapEdit()
+    {
+        VectorVoxel[] vv = saveLoadHandler.LoadDataFromChunkSave(new ChunkCoord(posX, posZ));
+        if (vv == null) return;
+        for (int i = 0; i < vv.Length; i++)
+        {
+            voxelMap[vv[i].vector.x, vv[i].vector.y, vv[i].vector.z] = (byte)vv[i].blockType;
         }
     }
 

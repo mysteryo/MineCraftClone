@@ -355,7 +355,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 170432660}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 871.1323, y: 745.1078, z: -227.33171}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1121,6 +1121,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 763833367}
   m_CullTransparentMesh: 0
+--- !u!1 &780342415
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 780342417}
+  - component: {fileID: 780342416}
+  m_Layer: 0
+  m_Name: SaveLoadHandler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &780342416
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 780342415}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 763dcfa99f51c154c9f53352da49f492, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 83582698}
+--- !u!4 &780342417
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 780342415}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &793711765
 GameObject:
   m_ObjectHideFlags: 0
@@ -2154,6 +2198,7 @@ MonoBehaviour:
   player: {fileID: 83582698}
   world: {fileID: 339814750}
   chunk: {fileID: 1134726685567044347, guid: 41ff5233be72d2d44b9564fa32bd5439, type: 3}
+  saveLoadHandler: {fileID: 780342416}
 --- !u!4 &1055936443
 Transform:
   m_ObjectHideFlags: 0
@@ -2442,6 +2487,10 @@ PrefabInstance:
       propertyPath: world
       value: 
       objectReference: {fileID: 339814750}
+    - target: {fileID: 2478975658169779421, guid: 0f50f46696514d64aa5ed5025d7b4564, type: 3}
+      propertyPath: saveLoadHandlerGO
+      value: 
+      objectReference: {fileID: 780342415}
     - target: {fileID: 2478975658169779423, guid: 0f50f46696514d64aa5ed5025d7b4564, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

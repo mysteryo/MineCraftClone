@@ -17,6 +17,7 @@ public class GenerateChunks : MonoBehaviour
     ChunkCoord currentPlayerPosInChunk;
     int viewRange = 5;
     public GameObject chunk;
+    public SaveLoadChunkHandler saveLoadHandler;
 
 
     // Start is called before the first frame update
@@ -38,14 +39,14 @@ public class GenerateChunks : MonoBehaviour
         UnloadChunks();
     }
 
-    //from project settings the fixed update is set to 0.1 seconds ie. 10 tics per second
-    //generating  1 chunk from queue every 0.1 seconds should offload some work when processing giant squares of new chunks at once
+    //from project settings the fixed update is set to 0.05 seconds ie. 20 tics per second
+    //generating  1 chunk from queue every 0.05 seconds should offload some work when processing giant squares of new chunks at once
     //after trying it seems to not have impact on basic physics in game
     //if weird things wiith physics will occur probably switch to courutine
 
     private void FixedUpdate()
     {
-        currentPlayerPosInChunk = new ChunkCoord((int)player.transform.position.x / 16, (int)player.transform.position.z / 16);
+        currentPlayerPosInChunk = ChunkCalculations.CalculateChunkFromWorldPos(player.position);
         if (currentChunkPos.posX != currentPlayerPosInChunk.posX || currentChunkPos.posZ != currentPlayerPosInChunk.posZ)
         {
             for (int i = -5; i <= 5; i++)
@@ -99,6 +100,7 @@ public class GenerateChunks : MonoBehaviour
         {
             GameObject.Destroy(VoxelData.chunkDictionary[toDestroy[0]].gameObject);
             VoxelData.chunkDictionary.Remove(toDestroy[0]);
+            saveLoadHandler.UnloadEditedBlocks(toDestroy[0]);
             toDestroy.RemoveAt(0);
         }
     }

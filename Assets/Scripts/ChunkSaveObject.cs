@@ -7,28 +7,30 @@ using System.Runtime.Serialization.Formatters.Binary;
 [System.Serializable]
 public class ChunkSaveObject
 {
-    int x;
-    int y;
-    int z;
-    ChunkCoord chunkCoord;
-    Block block;
+    public ChunkCoord chunk;
+    public int[,] vectors;
+    public Block blockType;
 
     public static string savePath = Application.persistentDataPath + "/Chunk/";
 
-    public ChunkSaveObject(int _x, int _y, int _z, ChunkCoord _chunkCoord, Block _block)
+    public ChunkSaveObject(ChunkCoord _chunk, VectorVoxel[] vectorVoxel)
     {
-        x = _x;
-        y = _y;
-        z = _z;
-        chunkCoord = _chunkCoord;
-        block = _block;
+        chunk = _chunk;
+        vectors = new int[vectorVoxel.Length,4];
+        for (int i = 0; i < vectorVoxel.Length; i++)
+        {
+            vectors[i,0] = vectorVoxel[i].vector.x;
+            vectors[i,1] = vectorVoxel[i].vector.y;
+            vectors[i,2] = vectorVoxel[i].vector.z;
+            vectors[i,3] = (int)vectorVoxel[i].blockType;
+        }
     }
 
 
     public static void SaveChunk(ChunkSaveObject so)
     {
         BinaryFormatter formatter = new BinaryFormatter();
-        string path = GetPathFromChunkCoord(so.chunkCoord);
+        string path = GetPathFromChunkCoord(so.chunk);
         FileStream stream = new FileStream(path, FileMode.Create);
         formatter.Serialize(stream, so);
         stream.Close();
@@ -68,5 +70,10 @@ public class ChunkSaveObject
         int.TryParse(coords[1], out int posZ);
 
         return new ChunkCoord(posX, posZ);
+    }
+
+    public static bool ChunkSaveExist(ChunkCoord chunk)
+    {
+        return File.Exists(GetPathFromChunkCoord(chunk));
     }
 }

@@ -8,6 +8,7 @@ public class PlacementController : MonoBehaviour
     public float rayDistance = 6f;
     public GameObject ghostBlock;
     public GameObject destructionGhost;
+    public GameObject saveLoadHandlerGO;
     RaycastHit hit;
     bool destroyed = false;
     public World world;
@@ -16,6 +17,7 @@ public class PlacementController : MonoBehaviour
     ChunkCoord destroyChunkCoord;
     Chunk c;
     DestructionBlock destroBlock;
+    SaveLoadChunkHandler saveLoadHandler;
     public LayerMask layer;
     float cooldown = .2f;
     float cooldownTimer = 0f;
@@ -29,6 +31,7 @@ public class PlacementController : MonoBehaviour
         ghostBlock.SetActive(false);
         destructionGhost.SetActive(false);
         destroBlock = destructionGhost.GetComponent<DestructionBlock>();
+        saveLoadHandler = saveLoadHandlerGO.GetComponent<SaveLoadChunkHandler>();
     }
 
     // Update is called once per frame
@@ -88,6 +91,7 @@ public class PlacementController : MonoBehaviour
         Chunk c = VoxelData.chunkDictionary[ghostChunkCoord];
         c.voxelMap[blockInChunkPos.x, blockInChunkPos.y, blockInChunkPos.z] = (byte)Inventory.currentBlock;
         c.RegenerateChunk();
+        saveLoadHandler.PrepareToSave(blockInChunkPos.x, blockInChunkPos.y, blockInChunkPos.z, ghostChunkCoord, Inventory.currentBlock);
         Debug.Log($"ghost block pos: {ghostBlock.transform.position.x} {ghostBlock.transform.position.y} {ghostBlock.transform.position.z}");
         Debug.Log($"Block placement = {blockInChunkPos.x} , {blockInChunkPos.y} , {blockInChunkPos.z}");
     }
@@ -155,8 +159,7 @@ public class PlacementController : MonoBehaviour
             destroyed = false;
             destructionGhost.SetActive(false);
             cooldownTimer = 0;
-            ChunkSaveObject so = new ChunkSaveObject(blockInChunkPos.x, blockInChunkPos.y, blockInChunkPos.z, destroyChunkCoord, Block.AIR);
-            ChunkSaveObject.SaveChunk(so);
+            saveLoadHandler.PrepareToSave(blockInChunkPos.x, blockInChunkPos.y, blockInChunkPos.z, destroyChunkCoord, Block.AIR);
         }
     }
 
