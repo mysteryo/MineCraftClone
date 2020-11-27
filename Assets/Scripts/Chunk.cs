@@ -154,11 +154,7 @@ public class Chunk : MonoBehaviour
         {
             return;
         }
-        Vector3 testVector = new Vector3(12, 33, 13);
-        if (pos == testVector)
-        {
-            Debug.Log("Hit test vector");
-        }
+        
         //check all 6 faces against block next to the face
         for (int p = 0; p < 6; p++)
         {

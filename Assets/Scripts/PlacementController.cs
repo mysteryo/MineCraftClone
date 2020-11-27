@@ -92,8 +92,8 @@ public class PlacementController : MonoBehaviour
         c.voxelMap[blockInChunkPos.x, blockInChunkPos.y, blockInChunkPos.z] = (byte)Inventory.currentBlock;
         c.RegenerateChunk();
         saveLoadHandler.PrepareToSave(blockInChunkPos.x, blockInChunkPos.y, blockInChunkPos.z, ghostChunkCoord, Inventory.currentBlock);
-        Debug.Log($"ghost block pos: {ghostBlock.transform.position.x} {ghostBlock.transform.position.y} {ghostBlock.transform.position.z}");
-        Debug.Log($"Block placement = {blockInChunkPos.x} , {blockInChunkPos.y} , {blockInChunkPos.z}");
+        //Debug.Log($"ghost block pos: {ghostBlock.transform.position.x} {ghostBlock.transform.position.y} {ghostBlock.transform.position.z}");
+        //Debug.Log($"Block placement = {blockInChunkPos.x} , {blockInChunkPos.y} , {blockInChunkPos.z}");
     }
 
     void DestroyBlock(Vector3 destroyPoint)
@@ -104,7 +104,7 @@ public class PlacementController : MonoBehaviour
 
         Vector3Int blockInChunkPos = ChunkCalculations.CalculatePosInBlock(destroyPoint);
 
-        Debug.Log($"{blockInChunkPos.x} , {blockInChunkPos.y} , {blockInChunkPos.z} mining this block");
+        //Debug.Log($"{blockInChunkPos.x} , {blockInChunkPos.y} , {blockInChunkPos.z} mining this block");
         float x = destroyPoint.x >= 0 ? (int)destroyPoint.x + .5f : (int)destroyPoint.x - .5f;
         float z = destroyPoint.z >= 0 ? (int)destroyPoint.z + .5f : (int)destroyPoint.z - .5f;
         destructionGhost.transform.position = new Vector3(x, (int)destroyPoint.y + .5f, z);
@@ -136,8 +136,8 @@ public class PlacementController : MonoBehaviour
         {
             c.voxelMap[blockInChunkPos.x, blockInChunkPos.y, blockInChunkPos.z] = (byte)BlockType.AIR;
             c.RegenerateChunk();
-            Debug.Log($"destroy block pos: {(int)destroyPoint.x} {(int)destroyPoint.y} {(int)destroyPoint.z}");
-            Debug.Log($"Block destroyed = {blockInChunkPos.x} , {blockInChunkPos.y} , {blockInChunkPos.z}");
+            //Debug.Log($"destroy block pos: {(int)destroyPoint.x} {(int)destroyPoint.y} {(int)destroyPoint.z}");
+            //Debug.Log($"Block destroyed = {blockInChunkPos.x} , {blockInChunkPos.y} , {blockInChunkPos.z}");
             ChunkCoord nextChunk;
             if (blockInChunkPos.x == 0)
             {
