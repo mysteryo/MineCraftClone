@@ -7,41 +7,12 @@ using System.Threading;
 public class World : MonoBehaviour
 {
     public Material material;
-    public Block[] blockTypes;
+    public Block[] blocks;
     public Transform player;
-    //int layer = 8;
-
-
-    //private void Start()
-    //{
-    //    for (int i = 0; i < 10; i++)
-    //    {
-    //        for (int j = 0; j < 10; j++)
-    //        {
-    //            SpawnChunk(new chunkCoord(i,j));
-    //        }
-    //    }
-    //    Vector3 spawnPoint = new Vector3(5 * VoxelData.chunkWidth, 60, 5 * VoxelData.chunkWidth);
-    //    player.position = spawnPoint;
-    //}
-
-    //public void SpawnChunk(chunkCoord coord)
-    //{
-    //    GameObject chunkGO = new GameObject();
-    //    chunkGO.name = $"Chunk({coord.posX},{coord.posZ})";
-    //    chunkGO.transform.parent = this.gameObject.transform;
-    //    chunkGO.gameObject.layer = layer;
-    //    MeshFilter mf = chunkGO.AddComponent<MeshFilter>();
-    //    MeshRenderer mr = chunkGO.AddComponent<MeshRenderer>();
-    //    MeshCollider mc = chunkGO.AddComponent<MeshCollider>();
-    //    mr.material = material;
-    //    Chunk c = new Chunk(coord.posX, coord.posZ, mr, mf, mc, this);
-    //    VoxelData.chunkDictionary.Add(new chunkCoord(coord.posX, coord.posZ), c);
-    //    VoxelData.chunkGameobjectDictionary.Add(new chunkCoord(coord.posX, coord.posZ), chunkGO);
-
-    //}
+    
 }
 
+[System.Serializable]
 public class Block
 {
     public string blockName;

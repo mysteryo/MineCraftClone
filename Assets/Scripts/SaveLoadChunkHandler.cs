@@ -30,11 +30,21 @@ public class SaveLoadChunkHandler : MonoBehaviour
                 }
 
             }
-            if (preparedToSave.Count > 0)
-            {
-                SaveDataToChunkSave();
-            }
         }
+        if(editedBlock.Count > 30)
+        {
+            preparedToSave = editedBlock;
+        }
+        if (preparedToSave.Count > 0)
+        {
+            SaveDataToChunkSave();
+        }
+    }
+
+    private void OnApplicationQuit()
+    {
+        preparedToSave = editedBlock;
+        SaveDataToChunkSave();
     }
 
     public VectorVoxel[] LoadDataFromChunkSave(ChunkCoord chunk)
@@ -73,8 +83,9 @@ public class SaveLoadChunkHandler : MonoBehaviour
         }
         foreach (ChunkCoord item in toRemove)
         {
-            preparedToSave.Remove(item);
+            editedBlock.Remove(item);
         }
+        preparedToSave.Clear();
     }
 
     public void UnloadEditedBlocks(ChunkCoord coord)
@@ -102,8 +113,6 @@ public class SaveLoadChunkHandler : MonoBehaviour
             dic.Add(vec, block);
             editedBlock.Add(coord, dic);
         }
-
-
     }
 }
 

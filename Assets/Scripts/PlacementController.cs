@@ -124,8 +124,8 @@ public class PlacementController : MonoBehaviour
         timeElapsed += Time.deltaTime;
         if (!PlayerInput.instantMining)
         {
-            if (timeElapsed > world.blockTypes[c.voxelMap[blockInChunkPos.x, blockInChunkPos.y, blockInChunkPos.z]].hardeness) destroyed = true;
-            ShowDestructionProgress(world.blockTypes[c.voxelMap[blockInChunkPos.x, blockInChunkPos.y, blockInChunkPos.z]].hardeness);
+            if (timeElapsed > world.blocks[c.voxelMap[blockInChunkPos.x, blockInChunkPos.y, blockInChunkPos.z]].hardeness) destroyed = true;
+            ShowDestructionProgress(world.blocks[c.voxelMap[blockInChunkPos.x, blockInChunkPos.y, blockInChunkPos.z]].hardeness);
         }
         else
         {

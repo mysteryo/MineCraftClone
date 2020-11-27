@@ -12,7 +12,7 @@ public class Chunk : MonoBehaviour
     public int posX;
     public int posZ;
     public World world;
-    public SaveLoadChunkHandler saveLoadHandler;
+    SaveLoadChunkHandler saveLoadHandler;
     public byte[,,] voxelMap = new byte[VoxelData.chunkWidth, VoxelData.chunkHeight, VoxelData.chunkWidth];
     byte[,] heightMap = new byte[VoxelData.chunkWidth, VoxelData.chunkWidth];
 
@@ -167,11 +167,12 @@ public class Chunk : MonoBehaviour
                 Block bt = new Block();
                 try
                 {
-                    bt = world.blockTypes[voxelMap[(int)pos.x, (int)pos.y, (int)pos.z]];
+                    bt = world.blocks[voxelMap[(int)pos.x, (int)pos.y, (int)pos.z]];
 
                 }
-                catch (System.Exception)
+                catch (System.Exception e)
                 {
+                    Debug.LogError(e);
                     Debug.LogError($"{pos.x}, {pos.y}, {pos.z}");
                     Debug.LogError($"{voxelMap[(int)pos.x, (int)pos.y, (int)pos.z]}");
 

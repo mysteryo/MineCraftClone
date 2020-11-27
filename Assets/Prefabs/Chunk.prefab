@@ -48,7 +48,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   posX: 0
   posZ: 0
-  world: {fileID: 1351362488736858065, guid: a1e9f7f3a0229be4ebe4315509d2296a, type: 3}
+  world: {fileID: 2965399971596747148, guid: a1e9f7f3a0229be4ebe4315509d2296a, type: 3}
+  saveLoadHandler: {fileID: 0}
 --- !u!23 &3987296309993950111
 MeshRenderer:
   m_ObjectHideFlags: 0
