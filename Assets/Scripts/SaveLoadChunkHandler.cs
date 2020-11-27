@@ -5,8 +5,8 @@ using UnityEngine;
 public class SaveLoadChunkHandler : MonoBehaviour
 {
     public Transform player;
-    Dictionary<ChunkCoord, Dictionary<Vector3Int, Block>> editedBlock = new Dictionary<ChunkCoord, Dictionary<Vector3Int, Block>>();
-    Dictionary<ChunkCoord, Dictionary<Vector3Int, Block>> preparedToSave = new Dictionary<ChunkCoord, Dictionary<Vector3Int, Block>>();
+    Dictionary<ChunkCoord, Dictionary<Vector3Int, BlockType>> editedBlock = new Dictionary<ChunkCoord, Dictionary<Vector3Int, BlockType>>();
+    Dictionary<ChunkCoord, Dictionary<Vector3Int, BlockType>> preparedToSave = new Dictionary<ChunkCoord, Dictionary<Vector3Int, BlockType>>();
     ChunkCoord currentChunkPos;
     ChunkCoord currentPlayerPosInChunk;
     void Start()
@@ -47,7 +47,7 @@ public class SaveLoadChunkHandler : MonoBehaviour
             for (int i = 0; i < vv.Length; i++)
             {
                 Vector3Int vec = new Vector3Int(so.vectors[i, 0], so.vectors[i, 1], so.vectors[i, 2]);
-                Block bloc = (Block)so.vectors[i, 3];
+                BlockType bloc = (BlockType)so.vectors[i, 3];
                 vv[i] = new VectorVoxel(vec, bloc);
                 PrepareToSave(vec.x, vec.y, vec.z, chunk, bloc);
             }
@@ -82,7 +82,7 @@ public class SaveLoadChunkHandler : MonoBehaviour
         editedBlock.Remove(coord);
     }
 
-    public void PrepareToSave(int x, int y, int z, ChunkCoord coord, Block block)
+    public void PrepareToSave(int x, int y, int z, ChunkCoord coord, BlockType block)
     {
         Vector3Int vec = new Vector3Int(x, y, z);
         if (editedBlock.ContainsKey(coord))
@@ -98,7 +98,7 @@ public class SaveLoadChunkHandler : MonoBehaviour
         }
         else
         {
-            Dictionary<Vector3Int, Block> dic = new Dictionary<Vector3Int, Block>();
+            Dictionary<Vector3Int, BlockType> dic = new Dictionary<Vector3Int, BlockType>();
             dic.Add(vec, block);
             editedBlock.Add(coord, dic);
         }
@@ -110,9 +110,9 @@ public class SaveLoadChunkHandler : MonoBehaviour
 public struct VectorVoxel
 {
     public Vector3Int vector;
-    public Block blockType;
+    public BlockType blockType;
 
-    public VectorVoxel(Vector3Int _vector, Block _blockType)
+    public VectorVoxel(Vector3Int _vector, BlockType _blockType)
     {
         vector = _vector;
         blockType = _blockType;

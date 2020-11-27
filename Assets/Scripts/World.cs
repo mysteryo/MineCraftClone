@@ -7,7 +7,7 @@ using System.Threading;
 public class World : MonoBehaviour
 {
     public Material material;
-    public BlockType[] blockTypes;
+    public Block[] blockTypes;
     public Transform player;
     //int layer = 8;
 
@@ -42,8 +42,7 @@ public class World : MonoBehaviour
     //}
 }
 
-[System.Serializable]
-public class BlockType
+public class Block
 {
     public string blockName;
     public bool isSolid;
@@ -85,7 +84,7 @@ public class BlockType
 //enum values coresponds to block type ID in editor
 //air blocks are assigned on the end of byte and we skip all mesh rendering and other stuff when we create them therefore they dont need blocktype or texture
 [System.Serializable]
-public enum Block
+public enum BlockType
 {
     BEDROCK, STONE, SAND, GRAVEL, COBBLESTONE, COAL, BRICK, WOOD, DIRT, GRASS, PLANK,FURNACE, AIR = 255
 }

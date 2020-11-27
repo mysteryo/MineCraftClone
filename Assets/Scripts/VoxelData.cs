@@ -7,7 +7,8 @@ public static class VoxelData
     public static Dictionary<ChunkCoord, Chunk> chunkDictionary = new Dictionary<ChunkCoord, Chunk>();
     public static Dictionary<ChunkCoord, GameObject> chunkGameobjectDictionary = new Dictionary<ChunkCoord, GameObject>();
     public static readonly int chunkWidth = 16;
-    public static readonly int chunkHeight = 50;
+    public static readonly int chunkHeight = 64;
+    public static readonly int seaLevel = 32;
 
     public static readonly int TextureAtlasSizeInBlocks = 4;
     public static float NormalizedBlockTextureSize

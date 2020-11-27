@@ -14,6 +14,7 @@ public class Chunk : MonoBehaviour
     public World world;
     public SaveLoadChunkHandler saveLoadHandler;
     public byte[,,] voxelMap = new byte[VoxelData.chunkWidth, VoxelData.chunkHeight, VoxelData.chunkWidth];
+    byte[,] heightMap = new byte[VoxelData.chunkWidth, VoxelData.chunkWidth];
 
     private void OnEnable()
     {
@@ -23,6 +24,7 @@ public class Chunk : MonoBehaviour
         gameObject.transform.position = Vector3.zero;
         PopulateVoxelMap();
         LoadVoxelMapEdit();
+        GenerateGrass();
         CreateMeshData();
         CreateMesh();
     }
@@ -47,18 +49,19 @@ public class Chunk : MonoBehaviour
             {
                 for (int z = 0; z < VoxelData.chunkWidth; z++)
                 {
-                    if (y == 0)
-                    {
-                        voxelMap[x, y, z] = (byte)Block.BEDROCK;
-                    }
-                    else if (Mathf.PerlinNoise((x + 16 * posX) * 0.05f, (z + 16 * posZ) * 0.05f) * 15 + y > VoxelData.chunkHeight * 0.7)
-                    {
-                        voxelMap[x, y, z] = (byte)Block.AIR;
-                    }
-                    else
-                    {
-                        voxelMap[x, y, z] = (byte)Block.GRASS;
-                    }
+                    //if (y == 0)
+                    //{
+                    //    voxelMap[x, y, z] = (byte)Block.BEDROCK;
+                    //}
+                    //else if (Mathf.PerlinNoise((x + 16 * posX) * 0.05f, (z + 16 * posZ) * 0.05f) * 15 + y > VoxelData.chunkHeight * 0.7)
+                    //{
+                    //    voxelMap[x, y, z] = (byte)Block.AIR;
+                    //}
+                    //else
+                    //{
+                    //    voxelMap[x, y, z] = (byte)Block.GRASS;
+                    //}
+                    voxelMap[x, y, z] = (byte)GenerateBlock(x, y, z);
                 }
             }
         }
@@ -161,7 +164,7 @@ public class Chunk : MonoBehaviour
         {
             if (!CheckVoxel(pos + VoxelData.faceChecks[p]))
             {
-                BlockType bt = new BlockType();
+                Block bt = new Block();
                 try
                 {
                     bt = world.blockTypes[voxelMap[(int)pos.x, (int)pos.y, (int)pos.z]];
@@ -174,7 +177,7 @@ public class Chunk : MonoBehaviour
 
                 }
 
-                Vector3 offsetPos = pos + new Vector3(16 * posX , 0, 16 * posZ );
+                Vector3 offsetPos = pos + new Vector3(16 * posX, 0, 16 * posZ);
                 verticies.Add(offsetPos + VoxelData.voxelVertecies[VoxelData.voxelTriangles[p, 0]]);
                 verticies.Add(offsetPos + VoxelData.voxelVertecies[VoxelData.voxelTriangles[p, 1]]);
                 verticies.Add(offsetPos + VoxelData.voxelVertecies[VoxelData.voxelTriangles[p, 2]]);
@@ -232,6 +235,59 @@ public class Chunk : MonoBehaviour
         uvs.Add(new Vector2(x, y + VoxelData.NormalizedBlockTextureSize));  //instead we go like (0.25,0.75) (0.25,1) (0.5,0.75) (0.75,1) so we follow same pattern but instead of 0 will use x or y and for 1 we add the normalized size which is 0.25
         uvs.Add(new Vector2(x + VoxelData.NormalizedBlockTextureSize, y));
         uvs.Add(new Vector2(x + VoxelData.NormalizedBlockTextureSize, y + VoxelData.NormalizedBlockTextureSize));
+    }
+
+    BlockType GenerateBlock(int x, int y, int z)
+    {
+        if (y == 0) return (byte)BlockType.BEDROCK;
+        BlockType blockType = BlockType.AIR;
+        float perlinValue = Perlin3D(x, y, z);
+        perlinValue += (y - VoxelData.seaLevel*1.25f) * 0.05f;
+        if (perlinValue < -1.8f) blockType = BlockType.COAL;
+        else if (perlinValue < -1.4f) blockType = BlockType.GRAVEL;
+        else if (perlinValue < -1.2f) blockType = BlockType.COAL;
+        else if (perlinValue < -1f) blockType = BlockType.SAND;
+        else if (perlinValue < .4f) blockType = BlockType.STONE;
+        else if (perlinValue < 0.6f) blockType = BlockType.DIRT;
+        else if (perlinValue < 0.7f) blockType = BlockType.STONE;
+        else if (perlinValue < 1f) blockType = BlockType.DIRT;
+        return blockType;
+    }
+
+    void GenerateGrass()
+    {
+        for (int x = 0; x < VoxelData.chunkWidth; x++)
+        {
+            for (int z = 0; z < VoxelData.chunkWidth; z++)
+            {
+                for (int y = VoxelData.chunkHeight -2; y > 0; y--)
+                {
+                    if(voxelMap[x,y,z] == (byte)BlockType.DIRT && voxelMap[x, y+1, z] == (byte)BlockType.AIR)
+                    {
+                        voxelMap[x, y, z] = (byte)BlockType.GRASS;
+                        break;
+                    }
+                }
+            }
+
+        }
+    }
+
+    float Perlin3D(int x, int y, int z)
+    {
+        x += 16 * posX;
+        z += 16 * posZ;
+        y += (x+z)/2;
+        float ab = Mathf.PerlinNoise(.07f * x + StartInitializer.seedForPerlin, .07f * y + StartInitializer.seedForPerlin);
+        float bc = Mathf.PerlinNoise(.07f * y + StartInitializer.seedForPerlin, .07f * z + StartInitializer.seedForPerlin);
+        float ca = Mathf.PerlinNoise(.07f * z + StartInitializer.seedForPerlin, .07f * x + StartInitializer.seedForPerlin);
+                                       
+        float ba = Mathf.PerlinNoise(.07f * y + StartInitializer.seedForPerlin, .07f * x + StartInitializer.seedForPerlin);
+        float cb = Mathf.PerlinNoise(.07f * z + StartInitializer.seedForPerlin, .07f * y + StartInitializer.seedForPerlin);
+        float ac = Mathf.PerlinNoise(.07f * x + StartInitializer.seedForPerlin, .07f * z + StartInitializer.seedForPerlin);
+
+        return (ab + bc + ca + ba + cb + ac) / 6f;
+
     }
 
 }

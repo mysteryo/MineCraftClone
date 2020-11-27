@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class Inventory : MonoBehaviour
 {
     public static bool isBlock;
-    public static Block currentBlock;
+    public static BlockType currentBlock;
     int index = 0;
     Color originalCol;
     List<Transform> slots = new List<Transform>();
@@ -44,28 +44,28 @@ public class Inventory : MonoBehaviour
             case 0:
                 return;
             case 1:
-                currentBlock = Block.DIRT;
+                currentBlock = BlockType.DIRT;
                 return;
             case 2:
-                currentBlock = Block.COBBLESTONE;
+                currentBlock = BlockType.COBBLESTONE;
                 return;
             case 3:
-                currentBlock = Block.STONE;
+                currentBlock = BlockType.STONE;
                 return;
             case 4:
-                currentBlock = Block.PLANK;
+                currentBlock = BlockType.PLANK;
                 return;
             case 5:
-                currentBlock = Block.BRICK;
+                currentBlock = BlockType.BRICK;
                 return;
             case 6:
-                currentBlock = Block.WOOD;
+                currentBlock = BlockType.WOOD;
                 return;
             case 7:
-                currentBlock = Block.SAND;
+                currentBlock = BlockType.SAND;
                 return;
             case 8:
-                currentBlock = Block.FURNACE;
+                currentBlock = BlockType.FURNACE;
                 return;
 
             default:

@@ -122,36 +122,41 @@ public class PlacementController : MonoBehaviour
         }
 
         timeElapsed += Time.deltaTime;
-        
-        if (timeElapsed > world.blockTypes[c.voxelMap[blockInChunkPos.x, blockInChunkPos.y, blockInChunkPos.z]].hardeness) destroyed = true;
-
-        ShowDestructionProgress(world.blockTypes[c.voxelMap[blockInChunkPos.x, blockInChunkPos.y, blockInChunkPos.z]].hardeness);
+        if (!PlayerInput.instantMining)
+        {
+            if (timeElapsed > world.blockTypes[c.voxelMap[blockInChunkPos.x, blockInChunkPos.y, blockInChunkPos.z]].hardeness) destroyed = true;
+            ShowDestructionProgress(world.blockTypes[c.voxelMap[blockInChunkPos.x, blockInChunkPos.y, blockInChunkPos.z]].hardeness);
+        }
+        else
+        {
+            if(c.voxelMap[blockInChunkPos.x, blockInChunkPos.y, blockInChunkPos.z] != (byte)BlockType.BEDROCK) destroyed = true;
+        }
 
         if (destroyed)
         {
-            c.voxelMap[blockInChunkPos.x, blockInChunkPos.y, blockInChunkPos.z] = (byte)Block.AIR;
+            c.voxelMap[blockInChunkPos.x, blockInChunkPos.y, blockInChunkPos.z] = (byte)BlockType.AIR;
             c.RegenerateChunk();
             Debug.Log($"destroy block pos: {(int)destroyPoint.x} {(int)destroyPoint.y} {(int)destroyPoint.z}");
             Debug.Log($"Block destroyed = {blockInChunkPos.x} , {blockInChunkPos.y} , {blockInChunkPos.z}");
             ChunkCoord nextChunk;
             if (blockInChunkPos.x == 0)
             {
-                nextChunk = new ChunkCoord((int)((destroyPoint.x - 1) / 16), (int)(destroyPoint.z / 16));
+                nextChunk = new ChunkCoord(destroyChunkCoord.posX - 1, destroyChunkCoord.posZ);
                 VoxelData.chunkDictionary[nextChunk].RegenerateChunk();
             }
             if (blockInChunkPos.x == 15)
             {
-                nextChunk = new ChunkCoord((int)((destroyPoint.x + 1) / 16), (int)(destroyPoint.z / 16));
+                nextChunk = new ChunkCoord(destroyChunkCoord.posX + 1, destroyChunkCoord.posZ);
                 VoxelData.chunkDictionary[nextChunk].RegenerateChunk();
             }
             if (blockInChunkPos.z == 0)
             {
-                nextChunk = new ChunkCoord((int)(destroyPoint.x / 16), (int)((destroyPoint.z - 1) / 16));
+                nextChunk = new ChunkCoord(destroyChunkCoord.posX, destroyChunkCoord.posZ - 1);
                 VoxelData.chunkDictionary[nextChunk].RegenerateChunk();
             }
             if (blockInChunkPos.z == 15)
             {
-                nextChunk = new ChunkCoord((int)(destroyPoint.x / 16), (int)((destroyPoint.z + 1) / 16));
+                nextChunk = new ChunkCoord(destroyChunkCoord.posX, destroyChunkCoord.posZ + 1);
                 VoxelData.chunkDictionary[nextChunk].RegenerateChunk();
             }
             ResetPoms();
@@ -159,7 +164,7 @@ public class PlacementController : MonoBehaviour
             destroyed = false;
             destructionGhost.SetActive(false);
             cooldownTimer = 0;
-            saveLoadHandler.PrepareToSave(blockInChunkPos.x, blockInChunkPos.y, blockInChunkPos.z, destroyChunkCoord, Block.AIR);
+            saveLoadHandler.PrepareToSave(blockInChunkPos.x, blockInChunkPos.y, blockInChunkPos.z, destroyChunkCoord, BlockType.AIR);
         }
     }
 

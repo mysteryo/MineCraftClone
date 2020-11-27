@@ -11,6 +11,8 @@ public class DebugMode : MonoBehaviour
     public Transform chunkLook;
     public Transform blockInChunkLook;
     public Transform player;
+    public Transform instantMining;
+    public Transform seed;
     public Camera mainCam;
 
     TextMeshProUGUI tmpWorldPos;
@@ -19,6 +21,9 @@ public class DebugMode : MonoBehaviour
     TextMeshProUGUI tmpWorldPositionLook;
     TextMeshProUGUI tmpChunkLook;
     TextMeshProUGUI tmpBlockInChunkLook;
+    TextMeshProUGUI tmpInstantMining;
+    TextMeshProUGUI tmpSeed;
+
 
     RaycastHit hit;
     int rayDistance = 50;
@@ -30,7 +35,8 @@ public class DebugMode : MonoBehaviour
         tmpWorldPositionLook = worldPositionLook.GetComponent<TextMeshProUGUI>();
         tmpChunkLook = chunkLook.GetComponent<TextMeshProUGUI>();
         tmpBlockInChunkLook = blockInChunkLook.GetComponent<TextMeshProUGUI>();
-
+        tmpInstantMining = instantMining.GetComponent<TextMeshProUGUI>();
+        tmpSeed = seed.GetComponent<TextMeshProUGUI>();
     }
 
     // Update is called once per frame
@@ -42,6 +48,10 @@ public class DebugMode : MonoBehaviour
 
         Vector3Int worldToChunkblock = ChunkCalculations.CalculatePosInBlock(player.transform.position);
         tmpBlockInChunk.text = $"{worldToChunkblock.x} , {worldToChunkblock.z}";
+
+        tmpInstantMining.text = PlayerInput.instantMining.ToString();
+
+        tmpSeed.text = StartInitializer.seed.ToString();
 
         if (Physics.Raycast(mainCam.transform.position, mainCam.transform.forward, out hit, rayDistance))
         {

@@ -9,7 +9,7 @@ public class ChunkSaveObject
 {
     public ChunkCoord chunk;
     public int[,] vectors;
-    public Block blockType;
+    public BlockType blockType;
 
     public static string savePath = Application.persistentDataPath + "/Chunk/";
 
