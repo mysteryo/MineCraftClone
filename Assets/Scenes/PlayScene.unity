@@ -2185,7 +2185,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 83582698}
-  world: {fileID: 0}
+  world: {fileID: 1731981778}
   chunk: {fileID: 1134726685567044347, guid: 41ff5233be72d2d44b9564fa32bd5439, type: 3}
   saveLoadHandler: {fileID: 780342416}
 --- !u!4 &1055936443
@@ -2948,7 +2948,7 @@ PrefabInstance:
     - target: {fileID: 2478975658169779421, guid: 0f50f46696514d64aa5ed5025d7b4564, type: 3}
       propertyPath: world
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1731981778}
     - target: {fileID: 2478975658169779421, guid: 0f50f46696514d64aa5ed5025d7b4564, type: 3}
       propertyPath: saveLoadHandlerGO
       value: 
@@ -4787,6 +4787,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1730343156}
   m_CullTransparentMesh: 0
+--- !u!114 &1731981778 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2965399971596747148, guid: a1e9f7f3a0229be4ebe4315509d2296a, type: 3}
+  m_PrefabInstance: {fileID: 7778395969660452964}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34607fd0fe687804eb76789e75d40347, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1908018711
 GameObject:
   m_ObjectHideFlags: 0
