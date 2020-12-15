@@ -30,7 +30,7 @@ public class PlayerInput : MonoBehaviour
 
     private void Start()
     {
-        //Cursor.lockState = CursorLockMode.Locked;
+        Cursor.lockState = CursorLockMode.Locked;
         if (!File.Exists(ChunkSaveObject.savePath))
         {
             Directory.CreateDirectory(ChunkSaveObject.savePath);
