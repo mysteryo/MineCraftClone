@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class SaveLoadChunkHandler : MonoBehaviour
 {
-    public Transform player;
+    Transform player;
     Dictionary<ChunkCoord, Dictionary<Vector3Int, BlockType>> editedBlock = new Dictionary<ChunkCoord, Dictionary<Vector3Int, BlockType>>();
     Dictionary<ChunkCoord, Dictionary<Vector3Int, BlockType>> preparedToSave = new Dictionary<ChunkCoord, Dictionary<Vector3Int, BlockType>>();
     ChunkCoord currentChunkPos;
     ChunkCoord currentPlayerPosInChunk;
     void Start()
     {
+        player = GameObject.FindObjectOfType<PlayerMove>().transform;
         currentChunkPos = ChunkCalculations.CalculateChunkFromWorldPos(player.position);
         currentPlayerPosInChunk = currentChunkPos;
     }
@@ -42,6 +43,12 @@ public class SaveLoadChunkHandler : MonoBehaviour
     }
 
     private void OnApplicationQuit()
+    {
+        preparedToSave = editedBlock;
+        SaveDataToChunkSave();
+    }
+
+    private void OnDestroy()
     {
         preparedToSave = editedBlock;
         SaveDataToChunkSave();

@@ -7,7 +7,7 @@ using System.Linq;
 
 public class GenerateChunks : MonoBehaviour
 {
-    public Transform player;
+    Transform player;
     public World world;
     Queue<ChunkCoord> toGenerate = new Queue<ChunkCoord>();
     HashSet<ChunkCoord> toGenerateUniques = new HashSet<ChunkCoord>();
@@ -30,13 +30,16 @@ public class GenerateChunks : MonoBehaviour
                 SpawnChunk(new ChunkCoord(i, j));
             }
         }
-        Vector3 spawnPoint = new Vector3(5 * VoxelData.chunkWidth, 60, 5 * VoxelData.chunkWidth);
-        player.position = spawnPoint;
     }
 
     private void Update()
     {
         UnloadChunks();
+    }
+
+    private void Start()
+    {
+        player = GameObject.FindObjectOfType<PlayerMove>().transform;
     }
 
     //from project settings the fixed update is set to 0.05 seconds ie. 20 tics per second

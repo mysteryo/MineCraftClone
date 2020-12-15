@@ -37,6 +37,8 @@ public class DebugMode : MonoBehaviour
         tmpBlockInChunkLook = blockInChunkLook.GetComponent<TextMeshProUGUI>();
         tmpInstantMining = instantMining.GetComponent<TextMeshProUGUI>();
         tmpSeed = seed.GetComponent<TextMeshProUGUI>();
+        player = GameObject.FindObjectOfType<PlayerMove>().transform;
+        mainCam = Camera.main;
     }
 
     // Update is called once per frame

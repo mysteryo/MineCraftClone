@@ -10,6 +10,7 @@ public class MainMenu : MonoBehaviour
     void Start()
     {
         Cursor.lockState = CursorLockMode.None;
+        PurgeDictionaries();
     }
 
     // Update is called once per frame
@@ -29,5 +30,11 @@ public class MainMenu : MonoBehaviour
     public void Play()
     {
         SceneManager.LoadScene(1);
+    }
+
+    void PurgeDictionaries()
+    {
+        VoxelData.chunkDictionary = new Dictionary<ChunkCoord, Chunk>();
+        VoxelData.chunkGameobjectDictionary = new Dictionary<ChunkCoord, GameObject>();
     }
 }

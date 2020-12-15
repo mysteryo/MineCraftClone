@@ -18,6 +18,7 @@ public class Chunk : MonoBehaviour
 
     private void OnEnable()
     {
+        world = GameObject.FindObjectOfType<World>();
         saveLoadHandler = GameObject.Find("SaveLoadHandler").GetComponent<SaveLoadChunkHandler>();
         posX = (int)transform.position.x;
         posZ = (int)transform.position.z;

@@ -8,7 +8,6 @@ public class PlacementController : MonoBehaviour
     public float rayDistance = 6f;
     public GameObject ghostBlock;
     public GameObject destructionGhost;
-    public GameObject saveLoadHandlerGO;
     RaycastHit hit;
     bool destroyed = false;
     public World world;
@@ -17,7 +16,7 @@ public class PlacementController : MonoBehaviour
     ChunkCoord destroyChunkCoord;
     Chunk c;
     DestructionBlock destroBlock;
-    SaveLoadChunkHandler saveLoadHandler;
+    public SaveLoadChunkHandler saveLoadHandler;
     public LayerMask layer;
     float cooldown = .2f;
     float cooldownTimer = 0f;
@@ -28,10 +27,14 @@ public class PlacementController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        mainCam = Camera.main;
+        saveLoadHandler = GameObject.FindObjectOfType<SaveLoadChunkHandler>();
+        world = GameObject.FindObjectOfType<World>();
+        ghostBlock = GameObject.Find("PlacementGhost");
+        destructionGhost = GameObject.Find("DestructionGhost");
+        destroBlock = destructionGhost.GetComponent<DestructionBlock>();
         ghostBlock.SetActive(false);
         destructionGhost.SetActive(false);
-        destroBlock = destructionGhost.GetComponent<DestructionBlock>();
-        saveLoadHandler = saveLoadHandlerGO.GetComponent<SaveLoadChunkHandler>();
     }
 
     // Update is called once per frame
